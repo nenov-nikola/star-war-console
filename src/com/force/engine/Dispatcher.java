@@ -62,14 +62,24 @@ public class Dispatcher {
 	}
 
 	private Item handleItemCreation(String name, ItemType itemType) {
-		Item item = new Item(name, itemType);
+		Item item = createItem(name, itemType);
 		itemByName.put(name, item);
 		return item;
 	}
 
 	private Location handleLocationCreation(String locationName, LocationType locationType) {
-		Location location = new Location(locationName, locationType);
+		Location location = createLocation(locationName, locationType);
 		locationByName.put(locationName, location);
+		return location;
+	}
+
+	private Item createItem(String name, ItemType itemType) {
+		Item item = new Item(name, itemType);
+		return item;
+	}
+
+	private Location createLocation(String locationName, LocationType locationType) {
+		Location location = new Location(locationName, locationType);
 		return location;
 	}
 
