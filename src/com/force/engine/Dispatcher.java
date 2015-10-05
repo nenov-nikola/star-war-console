@@ -15,15 +15,80 @@ import com.force.person.Sith;
 public class Dispatcher {
 
 	protected Map<String, Person> personByName = new HashMap<String, Person>();
+	protected HashMap<Person, Integer> moneyByPerson = new HashMap<Person, Integer>();
 	protected Map<String, Item> itemByName = new HashMap<String, Item>();
 	protected Map<String, Location> locationByName = new HashMap<String, Location>();
 
 	public void handleInteraction(String[] commandWords) {
 		if (commandWords[0].equals("create")) {
 			this.handleCreationCommand(commandWords);
+		} else if (commandWords[0].equals("drop") || commandWords[0].equals("pickup") || commandWords[0].equals("sell")
+				|| commandWords[0].equals("buy") || commandWords[0].equals("inventory")
+				|| commandWords[0].equals("money") || commandWords[0].equals("travel")) {
+			Person actor = this.personByName.get(commandWords[0]);
+			this.handlePersonCommand(commandWords, actor);
 		} else {
 			System.out.println("You mean ....");
 		}
+	}
+
+	private void handlePersonCommand(String[] commandWords, Person actor) {
+
+		switch (commandWords[1]) {
+		case "drop":
+			handleDropInteraction(actor);
+			break;
+		case "pickup":
+			handlePickUpInteraction(actor);
+			break;
+		case "sell":
+			this.handleSellInteraction(commandWords, actor);
+			break;
+		case "buy":
+			handleBuyInteraction(commandWords, actor);
+			break;
+		case "inventory":
+			handleListInventoryInteraction(actor);
+			break;
+		case "money":
+			System.out.println(moneyByPerson.get(actor));
+			break;
+		case "travel":
+			handleTravelInteraction(commandWords, actor);
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void handleTravelInteraction(String[] commandWords, Person actor) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void handleListInventoryInteraction(Person actor) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void handleBuyInteraction(String[] commandWords, Person actor) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void handleSellInteraction(String[] commandWords, Person actor) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void handlePickUpInteraction(Person actor) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void handleDropInteraction(Person actor) {
+		// TODO Auto-generated method stub
+
 	}
 
 	private void handleCreationCommand(String[] commandWords) {
