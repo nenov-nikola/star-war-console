@@ -118,7 +118,8 @@ public class Dispatcher {
 		for (Entry<String, ArrayList<Item>> i : itemsByLocation.entrySet()) {
 			for (Entry<String, Person> j : peopleByLocation.entrySet()) {
 				if (i.getKey().equals(j.getKey())) {
-					peopleItems.put(actor, i.getValue());
+					items.addAll(i.getValue());
+					peopleItems.put(actor, items);
 				}
 			}
 		}
