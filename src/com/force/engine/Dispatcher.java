@@ -71,11 +71,14 @@ public class Dispatcher {
 
 	private void handleShowItemsInteraction(Person actor) {
 		for (Entry<String, ArrayList<Item>> entry : itemsByLocation.entrySet()) {
-			for (Item item : items) {
-				if (actor.getLocationName().equals(entry.getKey())
-						&& actor.getLocationName().equals(item.getLocationName())) {
-					System.out.printf("On location " + entry.getKey() + " located: " + item.getName() + ". ");
-					System.out.println();
+			for (Entry<String, Person> entryLocation : peopleByLocation.entrySet()) {
+				for (Item item : items) {
+					if (actor.getLocationName().equals(entry.getKey())
+							&& actor.getLocationName().equals(item.getLocationName())
+							&& actor.getLocationName().equals(entryLocation.getKey())) {
+						System.out.printf("On location " + entry.getKey() + " located: " + item.getName() + ". ");
+						System.out.println();
+					}
 				}
 			}
 		}
@@ -111,11 +114,18 @@ public class Dispatcher {
 	}
 
 	private void handlePickUpInteraction(Person actor) {
-
+		// TODO fix pickUp interaction
+		for (Entry<String, ArrayList<Item>> i : itemsByLocation.entrySet()) {
+			for (Entry<String, Person> j : peopleByLocation.entrySet()) {
+				if (i.getKey().equals(j.getKey())) {
+					peopleItems.put(actor, i.getValue());
+				}
+			}
+		}
 	}
 
 	private void handleDropInteraction(Person actor) {
-		// TODO Auto-generated method stub
+		// TODO use commandWords array to choose which item to drop
 	}
 
 	private void handleCreationCommand(String[] commandWords) {
