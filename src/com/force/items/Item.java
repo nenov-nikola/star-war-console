@@ -6,7 +6,6 @@ public class Item {
 	private ItemType itemTpe;
 
 	public Item(String name, ItemType itemTpe) {
-		super();
 		this.name = name;
 		this.itemTpe = itemTpe;
 	}

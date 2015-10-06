@@ -1,10 +1,16 @@
 package com.force.person;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 import com.force.items.Item;
 import com.force.locations.Location;
 import com.force.locations.LocationType;
 
 public abstract class Person extends Location {
+
+	HashSet<Item> inventoryItems;
 
 	private String name;
 	private Location location;
@@ -24,8 +30,6 @@ public abstract class Person extends Location {
 		this.defencePoints = defencePoints;
 		this.personType = personType;
 	}
-
-	public abstract void addToInventory(Item item);
 
 	public int getHealth() {
 		return health;
@@ -83,4 +87,19 @@ public abstract class Person extends Location {
 		this.personType = personType;
 	}
 
+	public void addToInventory(Item item) {
+		this.inventoryItems.add(item);
+	}
+
+	public void removeFromInventory(Item item) {
+		this.inventoryItems.remove(item);
+	}
+
+	public List<Item> listInventory() {
+		List<Item> items = new ArrayList<Item>();
+		for (Item item : this.inventoryItems) {
+			items.add(item);
+		}
+		return items;
+	}
 }

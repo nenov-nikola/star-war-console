@@ -1,7 +1,9 @@
 package com.force.engine;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.force.items.Item;
 import com.force.items.ItemType;
@@ -14,21 +16,21 @@ import com.force.person.Sith;
 
 public class Dispatcher {
 
+	protected Map<Person, Integer> moneyByPerson = new HashMap<Person, Integer>();
+	protected Map<Location, List<Item>> itemsByLocation = new HashMap<Location, List<Item>>();
+	protected Map<String, Person> peopleByLocation = new HashMap<String, Person>();
+	protected Map<Person, List<Item>> peopleItems = new HashMap<Person, List<Item>>();
+
 	protected Map<String, Person> personByName = new HashMap<String, Person>();
-	protected HashMap<Person, Integer> moneyByPerson = new HashMap<Person, Integer>();
 	protected Map<String, Item> itemByName = new HashMap<String, Item>();
 	protected Map<String, Location> locationByName = new HashMap<String, Location>();
 
 	public void handleInteraction(String[] commandWords) {
 		if (commandWords[0].equals("create")) {
 			this.handleCreationCommand(commandWords);
-		} else if (commandWords[0].equals("drop") || commandWords[0].equals("pickup") || commandWords[0].equals("sell")
-				|| commandWords[0].equals("buy") || commandWords[0].equals("inventory")
-				|| commandWords[0].equals("money") || commandWords[0].equals("travel")) {
+		} else {
 			Person actor = this.personByName.get(commandWords[0]);
 			this.handlePersonCommand(commandWords, actor);
-		} else {
-			System.out.println("You mean ....");
 		}
 	}
 
@@ -51,7 +53,7 @@ public class Dispatcher {
 			handleListInventoryInteraction(actor);
 			break;
 		case "money":
-			System.out.println(moneyByPerson.get(actor));
+			System.out.println(actor.getPersonType() + "/" + actor.getName() + ": " + moneyByPerson.get(actor));
 			break;
 		case "travel":
 			handleTravelInteraction(commandWords, actor);
@@ -62,13 +64,22 @@ public class Dispatcher {
 	}
 
 	private void handleTravelInteraction(String[] commandWords, Person actor) {
-		// TODO Auto-generated method stub
-
+		if (actor != null) {
+			String newLocation = commandWords[2];
+			for (Entry<String, Person> i : peopleByLocation.entrySet()) {
+				if (i.getValue().getName().equals(actor.getName())) {
+					peopleByLocation.remove(i.getKey());
+					peopleByLocation.put(newLocation, actor);
+				}
+			}
+			System.out.println(actor.getName() + " has new location - " + newLocation);
+		}
 	}
 
 	private void handleListInventoryInteraction(Person actor) {
-		// TODO Auto-generated method stub
-
+		for (Entry<Person, List<Item>> entry : peopleItems.entrySet()) {
+			System.out.println(entry.getKey().getName() + " has: " + entry.getValue());
+		}
 	}
 
 	private void handleBuyInteraction(String[] commandWords, Person actor) {
@@ -82,13 +93,11 @@ public class Dispatcher {
 	}
 
 	private void handlePickUpInteraction(Person actor) {
-		// TODO Auto-generated method stub
 
 	}
 
 	private void handleDropInteraction(Person actor) {
 		// TODO Auto-generated method stub
-
 	}
 
 	private void handleCreationCommand(String[] commandWords) {
@@ -154,6 +163,8 @@ public class Dispatcher {
 		Person jedi = createJedi(jediName, attackPoints, defencePoints, jediHealth, jediMoney, locationName,
 				locationType, personType);
 		personByName.put(jediName, jedi);
+		moneyByPerson.put(jedi, jediMoney);
+		peopleByLocation.put(locationName, jedi);
 		return (Jedi) jedi;
 	}
 

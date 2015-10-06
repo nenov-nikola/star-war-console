@@ -37,13 +37,13 @@ public class Jedi extends Person implements IJedi {
 
 	}
 
-	@Override
+	/*@Override
 	public String toString() {
 		// Test Jedi`s creation
 		return String.format(
 				"Jedi`s location: %s, Jedi`s locationName: %s, Jedi`s attackPoints: %s, Jedi`s type: %s",
 				this.getLocationType(), this.getLocationName(), this.getAttackPoints(),
 				this.getPersonType());
-	}
+	}*/
 
 }
