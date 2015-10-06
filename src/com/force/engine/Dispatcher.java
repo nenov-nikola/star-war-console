@@ -1,5 +1,6 @@
 package com.force.engine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,10 @@ import com.force.person.Sith;
 
 public class Dispatcher {
 
+	protected List<Item> items = new ArrayList<>();
+
 	protected Map<Person, Integer> moneyByPerson = new HashMap<Person, Integer>();
-	protected Map<Location, List<Item>> itemsByLocation = new HashMap<Location, List<Item>>();
+	protected Map<String, ArrayList<Item>> itemsByLocation = new HashMap<String, ArrayList<Item>>();
 	protected Map<String, Person> peopleByLocation = new HashMap<String, Person>();
 	protected Map<Person, List<Item>> peopleItems = new HashMap<Person, List<Item>>();
 
@@ -40,6 +43,9 @@ public class Dispatcher {
 		case "drop":
 			handleDropInteraction(actor);
 			break;
+		case "showItems":
+			handleShowItemsInteraction(actor);
+			break;
 		case "pickup":
 			handlePickUpInteraction(actor);
 			break;
@@ -60,6 +66,18 @@ public class Dispatcher {
 			break;
 		default:
 			break;
+		}
+	}
+
+	private void handleShowItemsInteraction(Person actor) {
+		for (Entry<String, ArrayList<Item>> entry : itemsByLocation.entrySet()) {
+			for (Item item : items) {
+				if (actor.getLocationName().equals(entry.getKey())
+						&& actor.getLocationName().equals(item.getLocationName())) {
+					System.out.printf("On location " + entry.getKey() + " located: " + item.getName() + ". ");
+					System.out.println();
+				}
+			}
 		}
 	}
 
@@ -104,7 +122,9 @@ public class Dispatcher {
 		if (commandWords[1].equals("item")) {
 			String name = commandWords[2];
 			ItemType itemType = ItemType.valueOf(commandWords[3]);
-			this.handleItemCreation(name, itemType);
+			String itemLocationName = commandWords[4];
+			LocationType locationType = LocationType.valueOf(commandWords[5]);
+			this.handleItemCreation(name, itemType, itemLocationName, locationType);
 		} else if (commandWords[1].equals("jedi")) {
 			String jediName = commandWords[2];
 			int attackPoints = Integer.parseInt(commandWords[3]);
@@ -135,9 +155,12 @@ public class Dispatcher {
 		}
 	}
 
-	private Item handleItemCreation(String name, ItemType itemType) {
-		Item item = createItem(name, itemType);
+	private Item handleItemCreation(String name, ItemType itemType, String itemLocationName,
+			LocationType locationType) {
+		Item item = createItem(name, itemType, itemLocationName, locationType);
 		itemByName.put(name, item);
+		items.add(item);
+		itemsByLocation.put(itemLocationName, (ArrayList<Item>) items);
 		return item;
 	}
 
@@ -147,8 +170,8 @@ public class Dispatcher {
 		return location;
 	}
 
-	private Item createItem(String name, ItemType itemType) {
-		Item item = new Item(name, itemType);
+	private Item createItem(String name, ItemType itemType, String itemLocationName, LocationType locationType) {
+		Item item = new Item(name, itemType, itemLocationName, locationType);
 		return item;
 	}
 

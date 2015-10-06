@@ -1,11 +1,15 @@
 package com.force.items;
 
-public class Item {
+import com.force.locations.Location;
+import com.force.locations.LocationType;
+
+public class Item extends Location {
 
 	private String name;
 	private ItemType itemTpe;
 
-	public Item(String name, ItemType itemTpe) {
+	public Item(String name, ItemType itemTpe, String locationName, LocationType locationType) {
+		super(locationName, locationType);
 		this.name = name;
 		this.itemTpe = itemTpe;
 	}
